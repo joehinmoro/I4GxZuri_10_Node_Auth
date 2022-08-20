@@ -1,7 +1,7 @@
 // IMPORTS
 const mongoose = require("mongoose");
-const { User } = require("../models/userModel");
-const { Product } = require("../models/productModel");
+const { User } = require("../../models/userModel");
+const { Product } = require("../../models/productModel");
 
 // SEEDS
 // user seeds

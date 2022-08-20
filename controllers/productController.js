@@ -68,7 +68,7 @@ const updateProduct = async (req, res) => {
             return res.status(404).json({ error: "invalid id" });
 
         // find single product and update
-        const singleProduct = await Product.findByIdAndUpdate(id, { ...req.body });
+        const singleProduct = await Product.findByIdAndUpdate(id, { ...req.body }, { new: true });
         //
         if (!singleProduct) return res.status(404).json({ error: "product not found" });
         // send single product
