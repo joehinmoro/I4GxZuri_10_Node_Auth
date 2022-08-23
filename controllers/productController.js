@@ -17,10 +17,15 @@ const getProducts = async (req, res) => {
 
 // CREATE - POST
 const createProduct = async (req, res) => {
+    // verify role
+    if (!["admin", "manager", "staff", "user"].includes(role))
+        return res.status(401).json({ error: "unauthorized request" });
     try {
         // destructure from req body
-        const { name, price } = req.body;
-
+        const { name, price, role } = req.body;
+        // verify role
+        if (!["admin", "manager", "staff"].includes(role))
+            return res.status(401).json({ error: "unauthorized request" });
         // ensure non-empty fields
         const empty = [];
         if (!name) empty.push("name");
@@ -38,9 +43,15 @@ const createProduct = async (req, res) => {
 
 // SHOW - GET
 const getProduct = async (req, res) => {
+    // verify role
+    if (!["admin", "manager", "staff", "user"].includes(role))
+        return res.status(401).json({ error: "unauthorized request" });
     try {
         // destructure product id from req params
         const { id } = req.params;
+        // verify role
+        if (!["admin", "manager", "staff"].includes(role))
+            return res.status(401).json({ error: "unauthorized request" });
 
         // verify id is valid
         if (!mongoose.Types.ObjectId.isValid(id))
@@ -59,6 +70,9 @@ const getProduct = async (req, res) => {
 };
 
 const updateProduct = async (req, res) => {
+    // verify role
+    if (!["admin", "manager"].includes(role))
+        return res.status(401).json({ error: "unauthorized request" });
     try {
         // destructure product id from req params
         const { id } = req.params;
@@ -79,6 +93,8 @@ const updateProduct = async (req, res) => {
 };
 
 const deleteProduct = async (req, res) => {
+    // verify role
+    if (!["admin"].includes(role)) return res.status(401).json({ error: "unauthorized request" });
     try {
         // destructure product id from req params
         const { id } = req.params;

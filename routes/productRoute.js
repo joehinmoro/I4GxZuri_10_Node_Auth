@@ -1,5 +1,6 @@
 // IMPORTS
 const router = require("express").Router();
+const { userAuth } = require("../middleware/auth");
 const {
     getProduct,
     getProducts,
@@ -9,6 +10,8 @@ const {
 } = require("../controllers/productController");
 
 // ROUTES
+// auth
+router.use(userAuth);
 // index
 router.get("/", getProducts);
 // show
