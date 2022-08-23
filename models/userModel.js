@@ -29,7 +29,7 @@ const userSchema = new Schema(
 // signup static method
 userSchema.statics.signup = async function (email, password, role) {
     // validate email and password not null
-    if (!email || !password) throw Error("fields must be filled");
+    if (!email || !password || !role) throw Error("fields must be filled");
 
     // validate email format and password strength
     if (!isEmail(email)) throw Error("email is invalid");

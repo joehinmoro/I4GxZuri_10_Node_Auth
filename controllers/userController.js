@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const { User } = require("../models/userModel");
 
 // jwt
-const genToken = (payload) => jwt.sign(payload, SECRET, { expiresIn: "2d" });
+const genToken = (payload) => jwt.sign(payload, process.env.SECRET, { expiresIn: "2d" });
 
 // CONTROL FUNCTION
 // login
@@ -16,7 +16,7 @@ const loginUser = async (req, res) => {
         const user = await User.login(email, password);
         if (user) {
             // generate login token
-            const token = genToken(user._id);
+            const token = genToken({ user: user._id });
             // login
             res.status(200).json({ email, token });
         }
@@ -30,14 +30,14 @@ const loginUser = async (req, res) => {
 // sign up
 const signupUser = async (req, res) => {
     // destructure email and password from req body
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
 
     try {
         // attempt login
-        const user = await User.signup(email, password);
+        const user = await User.signup(email, password, role);
         if (user) {
             // generate login token
-            const token = genToken(user._id);
+            const token = genToken({ user: user._id });
             // login
             res.status(200).json({ email, token });
         }
