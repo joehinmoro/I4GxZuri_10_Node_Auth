@@ -18,5 +18,3 @@ const productSchema = new Schema(
 
 // MODEL
 module.exports.Product = model("Product", productSchema);
-
-// STATICS

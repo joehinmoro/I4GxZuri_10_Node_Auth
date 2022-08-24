@@ -1,15 +1,14 @@
 // IMPORTS
-const mongoose = require("mongoose");
 const { User } = require("../../models/userModel");
 const { Product } = require("../../models/productModel");
 
 // SEEDS
 // user seeds
 const users = [
-    { email: "thorodinson@thundermail.com", password: "l1ght3n1ng5tr1k3", role: "admin" },
-    { email: "tonystark@shield.com", password: "n3w3l3m3nt", role: "manager" },
-    { email: "brucebanner@greenmail.com", password: "AlwaY5AngrY", role: "staff" },
-    { email: "steverodgers@patriotmail.com", password: "5up3r5t3r01d", role: "user" },
+    { email: "admin@mail.com", password: "abcABC123!", role: "admin" },
+    { email: "manager@mail.com", password: "abcABC123!", role: "manager" },
+    { email: "staff@mail.com", password: "abcABC123!", role: "staff" },
+    { email: "user@mail.com", password: "abcABC123!", role: "user" },
 ];
 
 // product seeds
@@ -23,33 +22,17 @@ const products = [
     { name: "Pym Particles", price: 150 },
 ];
 
-// add prime seeds (once)
-const primeSeeds = async function () {
-    await User.insertMany([
-        {
-            email: "thanos@snapmail.com",
-            password: "purpl3buTT",
-            role: "admin",
-        },
-    ]);
-
-    await Product.create({
-        name: "The Infinity Gauntlet",
-        price: 750,
-    });
-};
-
 //  add seed data
-const seedAll = async (userID, productID) => {
+const seedAll = async () => {
     // clear user collection
-    const clearUser = await User.deleteMany({ _id: { $ne: userID } });
+    await User.deleteMany({});
     // clear product collection
-    const clearProduct = await Product.deleteMany({ _id: { $ne: productID } });
+    await Product.deleteMany({});
     // seed users
-    const seedUser = await User.insertMany(users);
+    for (const user of users) await User.signup(user.email, user.password, user.role);
     // seed products
-    const primeProduct = await Product.insertMany(products);
+    await Product.insertMany(products);
 };
 
 // EXPORTS
-module.exports = { primeSeeds, seedAll };
+module.exports = { seedAll };
