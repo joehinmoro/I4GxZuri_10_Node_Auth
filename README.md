@@ -16,5 +16,36 @@ DELETE - Admin.
 1. CREATE
 
 ```
-POST - ""
+POST - "/api/products"
+{
+    "name": "<product_name>", //string
+    "price": <price> , // number
+}
+```
+
+2. INDEX
+
+```
+GET - "/api/products"
+```
+
+3. SHOW
+
+```
+GET - "/api/products/:product_id"
+```
+
+4. UPDATE
+
+```
+PATCH - "/api/products/:product_id"
+{
+    "field": <new_value>
+}
+```
+
+5. DELETE
+
+```
+DELETE - "/api/products/:product_id"
 ```
