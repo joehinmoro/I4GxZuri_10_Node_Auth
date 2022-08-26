@@ -24,8 +24,8 @@ POST - "/api/products"
 
 body:
 {
-    "name": "<product_name>", //string
-    "price": <price> , // number
+    "name": "<product_name>",
+    "price": <price>
 }
 ```
 
