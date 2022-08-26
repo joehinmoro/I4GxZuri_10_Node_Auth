@@ -5,15 +5,19 @@ const { Product } = require("../models/productModel");
 // CONTROL FUNCTIONS
 // INDEX - GET
 const getProducts = async (req, res) => {
-    // verify role
-    console.log(req.role);
-    if (!["admin", "manager", "staff", "user"].includes(req.role))
-        return res.status(401).json({ error: "unauthorized request" });
     try {
-        // query all product
-        const products = await Product.find();
-        // send response
-        res.status(200).json(products);
+        // verify role
+        console.log(req.role);
+        if (!["admin", "manager", "staff", "user"].includes(req.role))
+            return res.status(401).json({ error: "unauthorized request" });
+        try {
+            // query all product
+            const products = await Product.find();
+            // send response
+            res.status(200).json(products);
+        } catch (error) {
+            return res.status(404).json({ error: "products not found" });
+        }
     } catch (error) {
         res.status(500).json({ error: { code: 500, message: "server error" } });
     }
@@ -21,10 +25,11 @@ const getProducts = async (req, res) => {
 
 // SHOW - GET
 const getProduct = async (req, res) => {
-    // verify role
-    if (!["admin", "manager", "staff", "user"].includes(req.role))
-        return res.status(401).json({ error: "unauthorized request" });
     try {
+        // verify role
+        if (!["admin", "manager", "staff", "user"].includes(req.role))
+            return res.status(401).json({ error: "unauthorized request" });
+
         // destructure product id from req params
         const { id } = req.params;
 
@@ -38,7 +43,6 @@ const getProduct = async (req, res) => {
 
         // send single product
         res.status(200).json(singleProduct);
-        //
     } catch (error) {
         res.status(500).json({ error: { code: 500, message: "server error" } });
     }
@@ -46,10 +50,11 @@ const getProduct = async (req, res) => {
 
 // CREATE - POST
 const createProduct = async (req, res) => {
-    // verify role
-    if (!["admin", "manager", "staff"].includes(req.role))
-        return res.status(401).json({ error: "unauthorized request" });
     try {
+        // verify role
+        if (!["admin", "manager", "staff"].includes(req.role))
+            return res.status(401).json({ error: "unauthorized request" });
+
         // destructure from req body
         const { name, price } = req.body;
 
@@ -60,7 +65,7 @@ const createProduct = async (req, res) => {
         if (empty.length > 1)
             return res.status(400).json({ error: "Please fill in all the fields", empty });
 
-        //create
+        //create product
         const newProduct = await Product.create({ name, price });
         res.status(200).json(newProduct);
     } catch (error) {
@@ -70,10 +75,11 @@ const createProduct = async (req, res) => {
 
 // UPDATE - PATCH
 const updateProduct = async (req, res) => {
-    // verify role
-    if (!["admin", "manager"].includes(req.role))
-        return res.status(401).json({ error: "unauthorized request" });
     try {
+        // verify role
+        if (!["admin", "manager"].includes(req.role))
+            return res.status(401).json({ error: "unauthorized request" });
+
         // destructure product id from req params
         const { id } = req.params;
 
@@ -92,12 +98,13 @@ const updateProduct = async (req, res) => {
     }
 };
 
-// DELETE
+// DELETE - DELETE
 const deleteProduct = async (req, res) => {
-    // verify role
-    if (!["admin"].includes(req.role))
-        return res.status(401).json({ error: "unauthorized request" });
     try {
+        // verify role
+        if (!["admin"].includes(req.role))
+            return res.status(401).json({ error: "unauthorized request" });
+
         // destructure product id from req params
         const { id } = req.params;
 

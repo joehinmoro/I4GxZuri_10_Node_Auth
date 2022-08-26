@@ -14,11 +14,13 @@ const userAuth = async (req, res, next) => {
 
     try {
         // verify token
-        const { user } = jwt.verify(token, process.env.SECRET);
+        const { userID } = jwt.verify(token, process.env.SECRET);
         // query id and role of user
-        const { role } = await User.findById(user).select("role");
-        req.role = role;
-        console.log(req.role);
+        const userRecord = await User.findById(userID).select("role");
+
+        if (!userRecord) return res.status(400).json({ error: "authorization error" });
+        req.role = userRecord.role;
+        // console.log(req.role);
         next();
     } catch (error) {
         res.status(400).json({ error: error.message });
