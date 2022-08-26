@@ -19,7 +19,7 @@ app.all("/", (req, res) => {
     res.redirect("/api/products");
 });
 // users
-app.use("/api/user", userRoute);
+app.use("/api/users", userRoute);
 // products
 app.use("/api/products", productRoute);
 
